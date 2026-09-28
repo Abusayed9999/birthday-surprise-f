@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>a birthday world for you</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Nunito:wght@400;700;800&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #FBF1F3;
+      --ink: #40303A;
+      --soft: #7A6672;
+      --card: #fff;
+      --rose: #D3667B;
+      --deep: #B84C63;
+      --lav: #DCCBEC;
+      --blush: #F7C6CF;
+      --sage: #7E9668;
+      box-sizing: border-box;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px)
+    }
+
+    @media (prefers-color-scheme:dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #2A1F2B;
+        --ink: #F6E9EE;
+        --soft: #C9B2BE;
+        --card: #3A2B3C;
+        --blush: #5A3C52;
+        --lav: #4A3A62
+      }
+    }
+
+    :root[data-theme="dark"] {
+      --bg: #2A1F2B;
+      --ink: #F6E9EE;
+      --soft: #C9B2BE;
+      --card: #3A2B3C;
+      --blush: #5A3C52;
+      --lav: #4A3A62
+    }
+
+    html {
+      scroll-padding-top: env(safe-area-inset-top, 0px);
+      height: 100%
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    body {
+      margin: 0;
+      height: 100%;
+      position: relative;
+      background: var(--bg);
+      color: var(--ink);
+      font: 16px/1.5 Nunito, sans-serif;
+      overflow: hidden
+    }
+
+    button {
+      font: inherit;
+      color: inherit;
+      border: 0;
+      background: none;
+      cursor: pointer
+    }
+
+    :focus-visible {
+      outline: 3px solid var(--rose);
+      outline-offset: 3px;
+      border-radius: 8px
+    }
+
+    .page {
+      position: absolute;
+      inset: 0;
+      overflow-y: auto;
+      padding: 28px 20px 110px;
+      display: none;
+      text-align: center;
+      background: linear-gradient(160deg, var(--blush), var(--bg) 55%, var(--lav))
+    }
+
+    .page.on {
+      display: flex;
+      animation: wipe .7s ease both
+    }
+
+    @keyframes wipe {
+      from {
+        clip-path: circle(0% at 50% 95%)
+      }
+
+      to {
+        clip-path: circle(150% at 50% 95%)
+      }
+    }
+
+    .in {
+      margin: auto;
+      width: 100%;
+      max-width: 540px
+    }
+
+    h1,
+    h2 {
+      font-family: Caveat, cursive;
+      margin: 0;
+      color: var(--deep)
+    }
+
+    h1 {
+      font-size: clamp(3rem, 13vw, 5.5rem);
+      line-height: 1
+    }
+
+    h2 {
+      font-size: clamp(2.2rem, 8vw, 3.2rem)
+    }
+
+    .sub {
+      color: var(--soft);
+      margin: 10px auto 22px;
+      max-width: 34ch
+    }
+
+    .btn {
+      background: var(--rose);
+      color: #fff;
+      padding: 13px 26px;
+      border-radius: 99px;
+      font-weight: 800;
+      margin: 6px;
+      box-shadow: 0 10px 24px -12px var(--deep);
+      transition: transform .2s
+    }
+
+    .btn:hover {
+      transform: translateY(-2px) rotate(-1deg)
+    }
+
+    .btn:disabled {
+      opacity: .6;
+      cursor: default
+    }
+
+    .btn.red {
+      background: #e0245e;
+      animation: wob 1.4s infinite
+    }
+
+    @keyframes wob {
+      50% {
+        transform: rotate(-4deg) scale(1.06)
+      }
+    }
+
+    #nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 30;
+      display: flex;
+      justify-content: center;
+      gap: 2px;
+      padding: 8px 8px calc(8px + env(safe-area-inset-bottom, 0px));
+      background: var(--card);
+      box-shadow: 0 -8px 30px -16px var(--deep)
+    }
+
+    #nav button {
+      flex: 1;
+      max-width: 84px;
+      font-size: 1.3rem;
+      padding: 4px 0;
+      border-radius: 14px;
+      line-height: 1.1
+    }
+
+    #nav small {
+      display: block;
+      font-size: .66rem;
+      font-weight: 700;
+      color: var(--soft)
+    }
+
+    #nav button.on {
+      background: var(--blush)
+    }
+
+    .credit {
+      position: fixed;
+      top: calc(8px + env(safe-area-inset-top, 0px));
+      right: 10px;
+      z-index: 35;
+      background: var(--card);
+      color: var(--soft);
+      font-size: .72rem;
+      font-weight: 700;
+      padding: 4px 11px;
+      border-radius: 99px;
+      box-shadow: 0 6px 16px -10px var(--deep);
+      opacity: .92;
+      pointer-events: none
+    }
+
+    #fx {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 40;
+      overflow: hidden
+    }
+
+    .tr {
+      position: fixed;
+      font-size: 16px;
+      transform: translate(-50%, -50%);
+      animation: tr .9s ease-out forwards
+    }
+
+    @keyframes tr {
+      to {
+        transform: translate(-50%, -160%) scale(.3);
+        opacity: 0
+      }
+    }
+
+    .rn {
+      position: fixed;
+      top: -40px;
+      font-size: 1.6rem;
+      animation: rain linear forwards
+    }
+
+    @keyframes rain {
+      to {
+        transform: translateY(115vh) rotate(360deg)
+      }
+    }
+
+    body.party .page {
+      animation: hue 2.5s linear infinite
+    }
+
+    @keyframes hue {
+      to {
+        filter: hue-rotate(360deg)
+      }
+    }
+
+    body.party .in {
+      animation: shake .4s infinite
+    }
+
+    @keyframes shake {
+      25% {
+        transform: translate(3px, -2px) rotate(.6deg)
+      }
+
+      75% {
+        transform: translate(-3px, 2px) rotate(-.6deg)
+      }
+    }
+
+    .flame {
+      transform-box: fill-box;
+      transform-origin: center bottom;
+      animation: fl .5s ease-in-out infinite alternate;
+      transition: opacity .4s, transform .4s
+    }
+
+    @keyframes fl {
+      to {
+        transform: scale(1.15, .9) rotate(4deg)
+      }
+    }
+
+    .cd {
+      cursor: pointer
+    }
+
+    .cd.out .flame {
+      animation: none;
+      opacity: 0;
+      transform: translateY(-8px) scale(.3)
+    }
+
+    .msg {
+      font-family: Caveat, cursive;
+      font-size: 1.6rem;
+      color: var(--sage);
+      min-height: 2.4em;
+      margin-top: 12px
+    }
+
+    .paper {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 26px 24px;
+      text-align: left;
+      box-shadow: 0 20px 40px -24px var(--deep);
+      transform: rotate(-.8deg)
+    }
+
+    #tw {
+      font-family: Caveat, cursive;
+      font-size: 1.45rem;
+      line-height: 1.45;
+      white-space: pre-wrap;
+      margin: 0;
+      min-height: 12em
+    }
+
+    #tw.typing::after {
+      content: "|";
+      animation: bl .7s infinite
+    }
+
+    @keyframes bl {
+      50% {
+        opacity: 0
+      }
+    }
+
+    .hud {
+      display: flex;
+      justify-content: center;
+      gap: 22px;
+      font-weight: 800;
+      margin-bottom: 10px
+    }
+
+    #arena {
+      position: relative;
+      height: 56vh;
+      max-height: 460px;
+      border-radius: 22px;
+      overflow: hidden;
+      background: var(--card);
+      box-shadow: inset 0 0 0 3px var(--blush);
+      touch-action: manipulation
+    }
+
+    .fh {
+      position: absolute;
+      top: -50px;
+      font-size: 2rem;
+      min-width: 44px;
+      min-height: 44px;
+      animation: dropy linear forwards
+    }
+
+    @keyframes dropy {
+      to {
+        transform: translateY(62vh)
+      }
+    }
+
+    #orb {
+      font-size: 7rem;
+      line-height: 1;
+      filter: drop-shadow(0 0 24px var(--lav));
+      animation: flt 3s ease-in-out infinite
+    }
+
+    @keyframes flt {
+      50% {
+        transform: translateY(-10px)
+      }
+    }
+
+    #orb.go {
+      animation: orbs .9s
+    }
+
+    @keyframes orbs {
+      20% {
+        transform: rotate(-18deg) scale(1.1)
+      }
+
+      40% {
+        transform: rotate(18deg)
+      }
+
+      60% {
+        transform: rotate(-12deg)
+      }
+
+      80% {
+        transform: rotate(10deg)
+      }
+    }
+
+    #pro {
+      font-family: Caveat, cursive;
+      font-size: 1.55rem;
+      margin-top: 14px;
+      min-height: 6em
+    }
+
+    #fin {
+      background: radial-gradient(circle at 50% 30%, #3b1d5c, #120a22);
+      color: #fff
+    }
+
+    #fin h1 {
+      background: linear-gradient(90deg, #ff9ec4, #ffe28a, #b6a0ff, #ff9ec4);
+      background-size: 300%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: sh 4s linear infinite
+    }
+
+    @keyframes sh {
+      to {
+        background-position: 300%
+      }
+    }
+
+    #fin .sub {
+      color: #e6d7ff
+    }
+
+    #cv {
+      position: fixed;
+      inset: 0;
+      z-index: 0
+    }
+
+    #fin .in {
+      position: relative;
+      z-index: 1
+    }
+
+    @media (prefers-reduced-motion:reduce) {
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="fx" aria-hidden="true"></div>
+  <div class="credit">developed by Sayed</div>
+
+  <main>
+    <section class="page on" id="home">
+      <div class="in">
+        <h1>happy birthday, <span class="nm">Fahi</span>! 🎂</h1>
+        <p class="sub">I built you a whole little world. six rooms, zero rules. wander around.</p>
+        <button class="btn" data-go="cake">start the surprise 💖</button>
+        <button class="btn red" id="party" type="button">don't press this 🔴</button>
+        <p class="sub" style="font-size:.9rem">(tip: drag your finger or mouse around. things happen.)</p>
+      </div>
+    </section>
+
+    <section class="page" id="cake">
+      <div class="in">
+        <h2>make a wish</h2>
+        <p class="sub">tap each candle, or blow into your mic like it's real life.</p>
+        <svg viewBox="0 0 260 210" width="270" style="display:block;margin:0 auto" role="img"
+          aria-label="birthday cake with five candles">
+          <ellipse cx="130" cy="192" rx="112" ry="10" fill="#7E9668" opacity=".2" />
+          <rect x="40" y="118" width="180" height="66" rx="12" fill="#F2A6B3" />
+          <path d="M40,120Q62,100 85,120Q108,140 130,120Q152,100 175,120Q198,140 220,120L220,132L40,132Z"
+            fill="#FFFDF9" />
+          <rect x="65" y="76" width="130" height="46" rx="10" fill="#C1A3D9" />
+          <path d="M65,78Q80,62 95,78Q110,94 125,78Q140,62 155,78Q170,94 185,78L195,84L65,84Z" fill="#FFFDF9" />
+          <g class="cd" tabindex="0" role="button" aria-label="blow out candle" transform="translate(85 44)">
+            <rect x="-4" y="0" width="8" height="34" rx="2" fill="#D3667B" />
+            <path class="flame" d="M0,-2C6,-8 6,-18 0,-26C-6,-18 -6,-8 0,-2Z" fill="#F3C969" />
+          </g>
+          <g class="cd" tabindex="0" role="button" aria-label="blow out candle" transform="translate(108 40)">
+            <rect x="-4" y="0" width="8" height="38" rx="2" fill="#9CB187" />
+            <path class="flame" d="M0,-2C6,-8 6,-18 0,-26C-6,-18 -6,-8 0,-2Z" fill="#F3C969" />
+          </g>
+          <g class="cd" tabindex="0" role="button" aria-label="blow out candle" transform="translate(130 36)">
+            <rect x="-4" y="0" width="8" height="42" rx="2" fill="#F3C969" />
+            <path class="flame" d="M0,-2C6,-8 6,-18 0,-26C-6,-18 -6,-8 0,-2Z" fill="#F3C969" />
+          </g>
+          <g class="cd" tabindex="0" role="button" aria-label="blow out candle" transform="translate(152 40)">
+            <rect x="-4" y="0" width="8" height="38" rx="2" fill="#9CB187" />
+            <path class="flame" d="M0,-2C6,-8 6,-18 0,-26C-6,-18 -6,-8 0,-2Z" fill="#F3C969" />
+          </g>
+          <g class="cd" tabindex="0" role="button" aria-label="blow out candle" transform="translate(175 44)">
+            <rect x="-4" y="0" width="8" height="34" rx="2" fill="#D3667B" />
+            <path class="flame" d="M0,-2C6,-8 6,-18 0,-26C-6,-18 -6,-8 0,-2Z" fill="#F3C969" />
+          </g>
+        </svg>
+        <button class="btn" id="mic" type="button">🎤 blow for real</button>
+        <button class="btn" id="tune" type="button" style="background:var(--sage)">🎵 play the song</button>
+        <p class="msg" id="cm" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <section class="page" id="letter">
+      <div class="in">
+        <h2>a letter for you</h2>
+        <div class="paper" style="margin-top:18px">
+          <p id="tw"></p>
+        </div>
+        <button class="btn" id="skip" type="button" style="margin-top:14px">skip the typing</button>
+      </div>
+    </section>
+
+    <section class="page" id="game">
+      <div class="in">
+        <h2>catch the love</h2>
+        <p class="sub">20 seconds. 💖 +1, 🎁 +5, 💔 costs you 3. go go go.</p>
+        <div class="hud"><span>time <b id="gt">20</b></span><span>score <b id="gs">0</b></span></div>
+        <div id="arena" aria-label="game area"></div>
+        <button class="btn" id="gb" type="button">start</button>
+        <p class="msg" id="gr" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <section class="page" id="fortune">
+      <div class="in">
+        <h2>your year, foretold</h2>
+        <p class="sub">tap the crystal ball. it is never wrong. (it is always wrong.)</p>
+        <button id="orb" type="button" aria-label="ask the crystal ball">🔮</button>
+        <p id="pro" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <section class="page" id="fin"><canvas id="cv" aria-hidden="true"></canvas>
+      <div class="in">
+        <h1>happy birthday <span class="nm">Fahi</span></h1>
+        <p class="sub">wishing you the whole sky. tap anywhere for more fireworks.</p>
+        <button class="btn" id="enc" type="button">encore 🎆</button>
+      </div>
+    </section>
+  </main>
+
+  <nav id="nav" aria-label="pages">
+    <button data-go="home" class="on">🏠<small>home</small></button>
+    <button data-go="cake">🎂<small>cake</small></button>
+    <button data-go="letter">💌<small>letter</small></button>
+    <button data-go="game">🎮<small>game</small></button>
+    <button data-go="fortune">🔮<small>fortune</small></button>
+    <button data-go="fin">🎆<small>finale</small></button>
+  </nav>
+
+  <script>
+    (function () {
+      const $ = id => document.getElementById(id), fx = $('fx');
+      let NAME = 'Fahi'; try { NAME = new URLSearchParams(location.search).get('name') || NAME } catch (e) { }
+      document.querySelectorAll('.nm').forEach(e => e.textContent = NAME);
+      document.title = 'happy birthday, ' + NAME + '!';
+      const RM = matchMedia('(prefers-reduced-motion:reduce)').matches;
+      const LETTER = 'dear ' + NAME + ',\n\nanother trip around the sun, and the world is luckier for it.\n\nI don\'t say this enough, so let today be my excuse: thank you for the late calls, the terrible jokes, and for showing up exactly when it matters.\n\nI hope your day is soft and slow and full of cake. and I hope this year hands you everything you deserve. fair warning: that is a lot.\n\nhappy birthday. I love you endlessly.\n\n- someone who adores you \u{1F495}';
+
+      /* sparkle trail + emoji rain */
+      function spark(x, y, e) { const s = document.createElement('span'); s.className = 'tr'; s.textContent = e; s.style.left = x + 'px'; s.style.top = y + 'px'; fx.appendChild(s); setTimeout(() => s.remove(), 900) }
+      const TE = ['💖', '✨', '🌸', '💫', '🦋']; let lt = 0;
+      if (!RM) addEventListener('pointermove', e => { const n = Date.now(); if (n - lt > 55) { lt = n; spark(e.clientX, e.clientY, TE[Math.random() * TE.length | 0]) } });
+      function rain(list, n) { if (RM) return; for (let i = 0; i < n; i++)setTimeout(() => { const s = document.createElement('span'); s.className = 'rn'; s.textContent = list[Math.random() * list.length | 0]; s.style.left = Math.random() * 100 + 'vw'; s.style.animationDuration = 2 + Math.random() * 2.5 + 's'; fx.appendChild(s); setTimeout(() => s.remove(), 4600) }, i * 45) }
+
+      /* routing */
+      const pages = document.querySelectorAll('.page'), navb = document.querySelectorAll('#nav button'); let typed = 0;
+      function go(id) {
+        pages.forEach(p => p.classList.toggle('on', p.id === id)); navb.forEach(b => b.classList.toggle('on', b.dataset.go === id));
+        const p = $(id); p.scrollTop = 0; if (id === 'letter' && !typed) type(); if (id === 'fin') startFW(); else stopFW()
+      }
+      document.querySelectorAll('[data-go]').forEach(b => b.addEventListener('click', () => go(b.dataset.go)));
+
+      /* party mode */
+      $('party').addEventListener('click', () => { const on = document.body.classList.toggle('party'); rain(on ? ['🎉', '🥳', '💖', '🎈', '🍰', '✨'] : [], on ? 60 : 0); $('party').textContent = on ? 'okay stop it 😂' : "don't press this 🔴" });
+
+      /* cake, mic, tune */
+      const cds = document.querySelectorAll('.cd');
+      function out(c) { if (c.classList.contains('out')) return; c.classList.add('out'); if ([...cds].every(x => x.classList.contains('out'))) done() }
+      function done() { $('cm').textContent = 'whatever you wished for, I hope it finds you right on time. ✨'; rain(['🎉', '💖', '🎈', '✨', '🌸'], 50); tune() }
+      cds.forEach(c => { c.addEventListener('click', () => out(c)); c.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); out(c) } }) });
+      $('mic').addEventListener('click', async () => {
+        try {
+          const s = await navigator.mediaDevices.getUserMedia({ audio: true }), a = new AudioContext(), n = a.createAnalyser(), d = new Uint8Array(n.fftSize); a.createMediaStreamSource(s).connect(n); $('cm').textContent = 'listening... blow!';
+          const t = setInterval(() => { n.getByteTimeDomainData(d); let m = 0; d.forEach(v => m = Math.max(m, Math.abs(v - 128))); if (m > 70) { clearInterval(t); s.getTracks().forEach(k => k.stop()); cds.forEach(out) } }, 80)
+        } catch (e) { $('cm').textContent = 'no mic here, so tap the candles instead 💖' }
+      });
+      let ac; function tune() {
+        try {
+          ac = ac || new AudioContext(); const N = { C: 261.6, D: 293.7, E: 329.6, F: 349.2, G: 392, A: 440, B: 466.2, c: 523.3 }; let t = ac.currentTime + .05;
+          'C.75 C.25 D1 C1 F1 E2 C.75 C.25 D1 C1 G1 F2 C.75 C.25 c1 A1 F1 E1 D1 B.75 B.25 A1 F1 G1 F2'.split(' ').forEach(x => { const f = N[x[0]], d = parseFloat(x.slice(1)) * .3, o = ac.createOscillator(), g = ac.createGain(); o.type = 'triangle'; o.frequency.value = f; g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.25, t + .03); g.gain.exponentialRampToValueAtTime(.0001, t + d); o.connect(g).connect(ac.destination); o.start(t); o.stop(t + d + .05); t += d })
+        } catch (e) { }
+      }
+      $('tune').addEventListener('click', tune);
+
+      /* typewriter letter */
+      let ti; function type() { typed = 1; const p = $('tw'); let i = 0; p.classList.add('typing'); ti = setInterval(() => { p.textContent = LETTER.slice(0, ++i); if (i >= LETTER.length) { clearInterval(ti); p.classList.remove('typing') } }, RM ? 1 : 32) }
+      $('skip').addEventListener('click', () => { clearInterval(ti); typed = 1; $('tw').textContent = LETTER; $('tw').classList.remove('typing') });
+
+      /* catch-the-love game */
+      let sc = 0, tm = 0, run = 0, sp, iv;
+      $('gb').addEventListener('click', () => {
+        if (run) return; sc = 0; tm = 20; run = 1; $('gs').textContent = 0; $('gt').textContent = 20; $('gr').textContent = ''; $('gb').disabled = true; $('gb').textContent = 'go!';
+        sp = setInterval(spawn, 480); iv = setInterval(() => { $('gt').textContent = --tm; if (tm <= 0) end() }, 1000)
+      });
+      function spawn() {
+        const A = $('arena'), r = Math.random(), t = r < .12 ? ['🎁', 5] : r < .3 ? ['💔', -3] : [['💖', '💗', '🌸', '💐'][Math.random() * 4 | 0], 1], e = document.createElement('button');
+        e.className = 'fh'; e.textContent = t[0]; e.setAttribute('aria-label', 'catch'); e.style.left = Math.random() * Math.max(10, A.clientWidth - 48) + 'px'; e.style.animationDuration = 2.2 + Math.random() * 1.6 + 's';
+        e.addEventListener('pointerdown', ev => { sc = Math.max(0, sc + t[1]); $('gs').textContent = sc; spark(ev.clientX, ev.clientY, t[1] < 0 ? '💥' : '✨'); e.remove() }); e.addEventListener('animationend', () => e.remove()); A.appendChild(e)
+      }
+      function end() {
+        clearInterval(sp); clearInterval(iv); run = 0; $('gb').disabled = false; $('gb').textContent = 'play again'; $('arena').innerHTML = '';
+        $('gr').textContent = sc + ' points. ' + (sc >= 45 ? 'legendary. you caught all the love, as usual. 👑' : sc >= 25 ? 'very good. the love is safe with you. 💖' : 'the hearts got away, but honestly you\'re the prize. 🎁'); if (sc >= 25) rain(['💖', '🎉', '✨'], 30)
+      }
+
+      /* fortune */
+      const A = ['laugh so hard you forget why', 'fall for a brand new obsession', 'get gloriously lost somewhere beautiful', 'win an argument with zero effort', 'find money in an old jacket', 'make a stranger\'s whole day'],
+        B = ['nail an outfit on the very first try', 'get the best seat in the room', 'learn something that surprises you', 'eat something unforgettable', 'get a message that makes you grin', 'dance when nobody asked you to'],
+        C = ['everything works out better than planned', 'someone will say "you were right"', 'you will realize you were already doing great', 'cake will be involved, obviously', 'your friends will feel lucky to know you'];
+      const pick = a => a[Math.random() * a.length | 0];
+      $('orb').addEventListener('click', () => {
+        const o = $('orb'); o.classList.remove('go'); void o.offsetWidth; o.classList.add('go'); $('pro').textContent = '...';
+        setTimeout(() => { $('pro').textContent = 'this year, ' + NAME + ', you will ' + pick(A) + ', then ' + pick(B) + '. and by the end, ' + pick(C) + '. ✨'; rain(['✨', '🔮', '🌟'], 10) }, RM ? 0 : 900)
+      });
+
+      /* fireworks */
+      const cv = $('cv'), cx = cv.getContext('2d'); let P = [], raf = 0, auto = 0;
+      function fit() { cv.width = innerWidth; cv.height = innerHeight }
+      function boom(x, y) { const h = Math.random() * 360; for (let i = 0; i < 80; i++) { const a = Math.random() * 6.283, s = Math.random() * 5 + 1; P.push({ x, y, vx: Math.cos(a) * s, vy: Math.sin(a) * s, l: 1, c: 'hsl(' + (h + Math.random() * 50) + ',90%,68%)' }) } }
+      function loop() { cx.clearRect(0, 0, cv.width, cv.height); P = P.filter(p => p.l > 0); P.forEach(p => { p.x += p.vx; p.y += p.vy; p.vy += .05; p.vx *= .985; p.l -= .012; cx.globalAlpha = Math.max(p.l, 0); cx.fillStyle = p.c; cx.fillRect(p.x, p.y, 3, 3) }); raf = requestAnimationFrame(loop) }
+      function startFW() { fit(); if (!raf) { loop(); boom(cv.width / 2, cv.height / 3); auto = setInterval(() => boom(Math.random() * cv.width, Math.random() * cv.height * .6), RM ? 2500 : 650) } }
+      function stopFW() { cancelAnimationFrame(raf); raf = 0; clearInterval(auto); P = [] }
+      $('fin').addEventListener('pointerdown', e => { if (e.target.id !== 'enc') boom(e.clientX, e.clientY) });
+      $('enc').addEventListener('click', () => { for (let i = 0; i < 8; i++)setTimeout(() => boom(Math.random() * cv.width, Math.random() * cv.height * .6), i * 160); rain(['🎆', '🎉', '💖', '🥳'], 40) });
+      addEventListener('resize', () => { if (raf) fit() });
+    })();
+  </script>
+</body>
+
+</html>
